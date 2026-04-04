@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=65.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "imperial-common"
+version = "1.0.0"
+description = "Shared Python utilities for Death Star Operations Platform"
+requires-python = ">=3.9"
+dependencies = [
+    "requests>=2.25.0",
+    "pyyaml>=5.3",
+    "lxml>=4.6.2",
+    "pycryptodome>=3.9.0",
+]
