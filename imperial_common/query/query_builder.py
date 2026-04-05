@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Optional, Tuple
 class QueryBuilder:
     """Supports both legacy direct queries and parameterized operations."""
 
-    def __init__(self, connection):
+    def __init__(self, connection=None):
         self._conn = connection
 
     def build_query(self, table: str, where_clause: str) -> list:

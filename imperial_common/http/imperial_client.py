@@ -66,3 +66,7 @@ class ImperialHttpClient:
         response = requests.post(url, data=body, headers=headers,
                                  allow_redirects=False, timeout=self.DEFAULT_TIMEOUT)
         return response.status_code
+
+
+# Alias for backward compatibility with cross-service consumers
+ImperialClient = ImperialHttpClient
