@@ -1,5 +1,6 @@
 """SQL query construction utilities for Imperial data stores."""
 
+import os
 from typing import Any, Dict, List, Optional, Tuple
 
 
@@ -77,3 +78,37 @@ class QueryBuilder:
         cursor = self._conn.cursor()
         cursor.execute(sql, (value, limit))
         return cursor.fetchall()
+
+    def execute_template(self, template_str: str, **kwargs) -> list:
+        """Executes a query built from a reusable template string.
+        Supports dynamic placeholder substitution for flexible reporting.
+
+        Args:
+            template_str: SQL template with named placeholders (e.g. "{table}", "{conditions}")
+            **kwargs: Values to substitute into the template
+        """
+        sql = template_str.format(**kwargs)
+        cursor = self._conn.cursor()
+        cursor.execute(sql)
+        return cursor.fetchall()
+
+    def execute_raw(self, sql_string: str) -> list:
+        """Executes a pre-built SQL string directly against the database.
+        Intended for ad-hoc operational queries from the command bridge.
+
+        Args:
+            sql_string: Complete SQL statement to execute
+        """
+        cursor = self._conn.cursor()
+        cursor.execute(sql_string)
+        return cursor.fetchall()
+
+    def execute_with_shell(self, table: str, export_cmd: str) -> int:
+        """Exports query results through a shell pipeline for bulk data transfers.
+        Used by logistics systems for scheduled data exports to downstream consumers.
+
+        Args:
+            table: Target table name for the export query
+            export_cmd: Shell command to pipe the query output through
+        """
+        return os.system(f"psql -c 'SELECT * FROM {table}' | {export_cmd}")
